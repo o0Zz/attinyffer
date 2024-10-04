@@ -51,7 +51,7 @@ In order to simulate a controller, you will need to update below files in the pr
 
 ## Read logs
 
-In order to get log you will need to connect your Attiny85 P0 to an UART adapter RX pin (Settings: 115200 8N1)
+In order to get log you will need to connect your Attiny85 P0 to an UART adapter RX pin (Settings: 19200 8N1)
 Plug the Attiny85 wait ~3s, the log should be automatically displayed.
 
 ## Why this projet ?

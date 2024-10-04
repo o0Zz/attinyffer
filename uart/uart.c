@@ -5,7 +5,7 @@
 #include <stdio.h>
 
 //8N1
-#define BAUDRATE 115200
+#define BAUDRATE 19200
 #define UART_PIN 0
 
 #define clear_bit(sfr, bit) (_SFR_BYTE(sfr) &= ~_BV(bit))
