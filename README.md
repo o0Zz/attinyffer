@@ -1,5 +1,5 @@
-# attinyffer
-Attiny85 USB Sniffer (Simulate HID Controller)
+# ATTinyffer: ATTiny85 USB Sniffer & HID Controller Simulator
+This project provides an easy-to-use solution for simulating a USB controller and sniffing the communication process during controller detection. It is particularly useful for reverse engineering closes systems such as gaming consoles and other devices that rely on HID controllers.
 
 ## Prerequisite
 
@@ -11,8 +11,8 @@ Attiny85 USB Sniffer (Simulate HID Controller)
 
 ```
 sudo apt-get install avrdude gcc-avr
-git clone https://github.com/kunaakos/tinyntendo.git
-cd tinyntendo
+git clone https://github.com/o0zz/attinyffer.git
+cd attinyffer
 make clean && make
 ```
 
