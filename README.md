@@ -49,6 +49,17 @@ In order to simulate a controller, you will need to update below files in the pr
 - To update the "GET DESCRIPTOR Response CONFIGURATION"
 `PROGMEM const char usbDescriptorConfiguration`
 
+## Read logs
+
+In order to get log you will need to connect your Attiny85 P0 to an UART adapter RX pin (Settings: 115200 8N1)
+Plug the Attiny85 wait ~3s, the log should be automatically displayed.
+
+## Why this projet ?
+
+The v-usb library includes a built-in logger, but it requires a physical UART connection. 
+Attiny85 don't have physical UART and using softuart cause issues where the AVR device is not recognized by the host during discovery. 
+To address this problem, this implementation bufferize the logs and transmits them only after the host has successfully completed the discovery process.
+
 # FAQ
 
 ## avrdude: warning: cannot set sck period. please check for usbasp firmware update.
