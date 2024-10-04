@@ -10,15 +10,56 @@
 // v-usb lib
 #include "usbconfig.h"
 #include "usbdrv/usbdrv.h"
-// #include "usbdrv/oddebug.h"
 
-// controller modules
-#ifdef SNES
-#include "snes/snes.h"
-#endif
-#ifdef NES
-#include "nes/nes.h"
-#endif
+#include "gamepad/gamepad.h"
+
+#include "uart/uart.h"
+#include <string.h>
+
+/* ------------------------------------------------------------- 
+                        LOGGING
+   ------------------------------------------------------------- */
+
+uint32_t logTotalLen = 0;
+uint8_t logBuffer[420];
+uint8_t logBufferLen = 0;
+
+void log_buffer(uint8_t *data, uint8_t len)
+{
+  if (logBufferLen + len + 2 > sizeof(logBuffer))
+    return;
+
+  logBuffer[logBufferLen++] = len;
+  memcpy(&logBuffer[logBufferLen], data, len);  
+  logBufferLen += len;
+}
+
+void log_flush()
+{
+  if (logBufferLen == 0)
+    return;
+
+  softUart_send_string("******\r\n");
+  for (int i=0; i<logBufferLen;)
+  {
+    uint8_t len = logBuffer[i++];
+
+    softUart_send_string("-> ");
+    softUart_send_buffer(&logBuffer[i], len);
+    softUart_send_string("\r\n");
+    
+    i += len;
+  }
+  softUart_send_string("------\r\n");
+  logBufferLen = 0;
+}
+
+void usb_rx_hook(uint8_t *data, uint8_t len)
+{
+  log_buffer(data, len);
+}
+
+/* ------------------------------------------------------------- */
 
 // USB reset hook, see usbconfig.h
 void hadUsbReset(void) {
@@ -45,6 +86,7 @@ int main(void) {
   usbDeviceConnect();
 
   initController();
+  softUart_init();
 
   // init USB
   usbInit();
@@ -53,7 +95,7 @@ int main(void) {
   sei();
 
   // MAIN LOOP START
-  for(;;) {
+  for(uint32_t i=0;;i++) {
 
     // pet the Watchdog
     wdt_reset();
@@ -63,11 +105,14 @@ int main(void) {
 
     // send report if host is ready
     if(usbInterruptIsReady()){
+        memset(&reportBuffer, 0, sizeof(reportBuffer));
         readController();
         usbSetInterrupt((void *)&reportBuffer, sizeof(reportBuffer));
     }
 
+    if ((i % 100000) == 0) //Regularly flush logs (~4s)
+      log_flush();
   }
+  
   // MAIN LOOP end
-
 }

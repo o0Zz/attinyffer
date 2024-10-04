@@ -6,10 +6,9 @@ AVRDUDE = avrdude $(PROGRAMMER) -p $(DEVICE)
 
 COMPILE = avr-gcc -Wall -Os -DF_CPU=$(CLOCK) -mmcu=$(DEVICE) -I. -D $(MODULE)
 
-_OBJECTS   := libs-device/osccal.o usbdrv/usbdrv.o usbdrv/usbdrvasm.o usbdrv/oddebug.o main.o
+_OBJECTS   := libs-device/osccal.o usbdrv/usbdrv.o usbdrv/usbdrvasm.o usbdrv/oddebug.o uart/uart.o main.o 
 
 all: gamepad
-
 
 gamepad: OBJECTS = $(_OBJECTS) gamepad/gamepad.o
 gamepad: MODULE = GAMEPAD

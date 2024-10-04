@@ -1,10 +1,5 @@
 // controller-specific configuration
-#ifdef SNES
-#include "snes/usbconfig-snes.h"
-#endif
-#ifdef NES
-#include "nes/usbconfig-nes.h"
-#endif
+#include "gamepad/usbconfig-gamepad.h"
 
 /* Name: usbconfig.h
  * Project: V-USB, virtual USB port for Atmel's(r) AVR(r) microcontrollers
@@ -160,7 +155,7 @@ section at the end of this file).
  * in a single control-in or control-out transfer. Note that the capability
  * for long transfers increases the driver size.
  */
-/* #define USB_RX_USER_HOOK(data, len)     if(usbRxToken == (uchar)USBPID_SETUP) blinkLED(); */
+ #define USB_RX_USER_HOOK(data, len)     usb_rx_hook(data, len);
 /* This macro is a hook if you want to do unconventional things. If it is
  * defined, it's inserted at the beginning of received message processing.
  * If you eat the received message and don't want default processing to
