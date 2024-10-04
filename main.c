@@ -20,13 +20,12 @@
                         LOGGING
    ------------------------------------------------------------- */
 
-uint32_t logTotalLen = 0;
 uint8_t logBuffer[420];
 uint8_t logBufferLen = 0;
 
 void log_buffer(uint8_t *data, uint8_t len)
 {
-  if (logBufferLen + len + 2 > sizeof(logBuffer))
+  if (logBufferLen + len + 1 > sizeof(logBuffer))
     return;
 
   logBuffer[logBufferLen++] = len;
@@ -51,6 +50,7 @@ void log_flush()
     i += len;
   }
   softUart_send_string("------\r\n");
+  
   logBufferLen = 0;
 }
 
